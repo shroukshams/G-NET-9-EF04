@@ -13,6 +13,7 @@ namespace G_NET_9_EF04.Models
         public Branch BranchAccount { get; set; }
         public List<Transaction> TransactionList { get; set; }
         public List<AccountCustomer> AccountCustomers { get; set; }
+        //[ForeignKey("BranchAccount")]
         public int BranchId { get; set; }
     }
 }

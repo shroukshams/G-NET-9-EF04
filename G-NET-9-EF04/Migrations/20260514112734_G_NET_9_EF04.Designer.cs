@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace G_NET_9_EF04.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260509201640_G_NET_9_EF04")]
+    [Migration("20260514112734_G_NET_9_EF04")]
     partial class G_NET_9_EF04
     {
         /// <inheritdoc />
@@ -34,27 +34,18 @@ namespace G_NET_9_EF04.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountNumber"));
 
                     b.Property<string>("AccountType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Balance")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("OpenDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("AccountNumber");
-
-                    b.HasIndex("AccountNumber")
-                        .IsUnique();
 
                     b.HasIndex("BranchId");
 
@@ -63,10 +54,10 @@ namespace G_NET_9_EF04.Migrations
 
             modelBuilder.Entity("G_NET_9_EF04.Models.AccountCustomer", b =>
                 {
-                    b.Property<int>("AccountId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<bool>("AccountStuatus")
@@ -79,11 +70,11 @@ namespace G_NET_9_EF04.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccountId", "CustomerId");
+                    b.HasKey("CustomerId", "AccountId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("AccountId");
 
-                    b.ToTable("AccountCustomers");
+                    b.ToTable("CustomerAccounts");
                 });
 
             modelBuilder.Entity("G_NET_9_EF04.Models.Branch", b =>
@@ -153,10 +144,7 @@ namespace G_NET_9_EF04.Migrations
             modelBuilder.Entity("G_NET_9_EF04.Models.Manger", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BranchCode")
                         .HasColumnType("int");
@@ -178,13 +166,7 @@ namespace G_NET_9_EF04.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BranchCode")
-                        .IsUnique();
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("Mangers");
+                    b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("G_NET_9_EF04.Models.Transaction", b =>
@@ -254,7 +236,7 @@ namespace G_NET_9_EF04.Migrations
                 {
                     b.HasOne("G_NET_9_EF04.Models.Branch", "BranchManger")
                         .WithOne("mangerBranch")
-                        .HasForeignKey("G_NET_9_EF04.Models.Manger", "BranchCode")
+                        .HasForeignKey("G_NET_9_EF04.Models.Manger", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

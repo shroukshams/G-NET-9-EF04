@@ -51,9 +51,9 @@ namespace G_NET_9_EF04.Migrations
                 {
                     AccountNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Balance = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false, defaultValue: 0m),
-                    AccountType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    OpenDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AccountType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OpenDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BranchId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -68,11 +68,10 @@ namespace G_NET_9_EF04.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Mangers",
+                name: "Managers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -81,17 +80,17 @@ namespace G_NET_9_EF04.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Mangers", x => x.Id);
+                    table.PrimaryKey("PK_Managers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Mangers_Branches_BranchCode",
-                        column: x => x.BranchCode,
+                        name: "FK_Managers_Branches_Id",
+                        column: x => x.Id,
                         principalTable: "Branches",
                         principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AccountCustomers",
+                name: "CustomerAccounts",
                 columns: table => new
                 {
                     AccountId = table.Column<int>(type: "int", nullable: false),
@@ -102,15 +101,15 @@ namespace G_NET_9_EF04.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountCustomers", x => new { x.AccountId, x.CustomerId });
+                    table.PrimaryKey("PK_CustomerAccounts", x => new { x.CustomerId, x.AccountId });
                     table.ForeignKey(
-                        name: "FK_AccountCustomers_Accounts_AccountId",
+                        name: "FK_CustomerAccounts_Accounts_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Accounts",
                         principalColumn: "AccountNumber",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AccountCustomers_Customers_CustomerId",
+                        name: "FK_CustomerAccounts_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "Id",
@@ -141,32 +140,14 @@ namespace G_NET_9_EF04.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccountCustomers_CustomerId",
-                table: "AccountCustomers",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Accounts_AccountNumber",
-                table: "Accounts",
-                column: "AccountNumber",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Accounts_BranchId",
                 table: "Accounts",
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Mangers_BranchCode",
-                table: "Mangers",
-                column: "BranchCode",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Mangers_Id",
-                table: "Mangers",
-                column: "Id",
-                unique: true);
+                name: "IX_CustomerAccounts_AccountId",
+                table: "CustomerAccounts",
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_AccountId",
@@ -178,10 +159,10 @@ namespace G_NET_9_EF04.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AccountCustomers");
+                name: "CustomerAccounts");
 
             migrationBuilder.DropTable(
-                name: "Mangers");
+                name: "Managers");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

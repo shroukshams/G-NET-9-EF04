@@ -6,7 +6,6 @@ using System.Net;
 using System.Threading.Tasks.Dataflow;
 using G_NET_9_EF04.enums;
 
-
 namespace G_NET_9_EF04
 {
     internal class Program
@@ -31,23 +30,24 @@ namespace G_NET_9_EF04
                 Console.WriteLine("=====================================");
                 Console.Write("Please select an option: ");
 
-
                 string option = Console.ReadLine();
+                Functions funtion = new Functions();
                 switch (option)
                 {
                     case "1":
-                       AddCustomer();
+                   funtion.AddCustomer();
 
                         break;
                     case "2":
-                    //.openAccount();
+                        funtion.OpenAccountForCustomer();
+                        break;
                     case "3":
-                        //pdateAccountStatus();
+                        funtion.UpdateAccountStatus();
                         break;
                     case "4":
-                    // RemoveAccoting();
+                    funtion.RemoveAccountFromCustomer();
+                        break;
                     case "5":
-                     
 
                         break;
                     case "0":
@@ -59,7 +59,7 @@ namespace G_NET_9_EF04
                         break;
 
                 }
-
+                 
 
 
 
@@ -71,46 +71,9 @@ namespace G_NET_9_EF04
         }
 
 
-        static void AddCustomer()
-        {
-
-            Console.WriteLine("Add New Customer----");
-
-
-                using (var context = new ApplicationDbContext())
-            {
-                var customers = new Customer();
-                Console.WriteLine("FullName:  ");
-
-                customers.FullName = Console.ReadLine();
-                Console.WriteLine("PhoneNumber  :   ");
-                customers.PhoneNumber =Console.ReadLine();
-                Console.WriteLine("Email  :   ");
-                customers.Email= Console.ReadLine();
-                Console.WriteLine("DateOfBirth  :   ");
-                customers.DateOfBirth=Convert.ToDateTime(Console.ReadLine());
-                Console.WriteLine("Address  :   ");
-                customers.Address= Console.ReadLine();
-
-                Console.WriteLine("NationalityId  :   ");
-                customers.NationalityId=Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("CustomerType  :Iidividual/Business  ");
-                if (Enum.TryParse(Console.ReadLine(), out CustomerType customerType))
-                {
-                    customers.CustomerType = customerType.ToString();
-                }
-                else
-                {
-                    Console.WriteLine("Invalid Customer Type. Please enter 'Individual' or 'Business'.");
-                    return;
-                }
-                customers.CustomerType = Console.ReadLine();
-                context.Customers.Add(customers);
-                context.SaveChanges();
- 
-            }
+       
 
 
         } }
   
-    }
+    

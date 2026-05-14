@@ -12,5 +12,6 @@ namespace G_NET_9_EF04.Models
         public string PhoneNumber { get; set; }
         public Manger mangerBranch { get; set; }
         public List<Account> Accounts { get; set; }
+       
     }
 }
